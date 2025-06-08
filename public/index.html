@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Banner App</title>
+  <script src="https://unpkg.com/@shopify/app-bridge@3"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    .success { color: green; font-weight: bold; }
+    .banner-preview {
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Banner App Installed Successfully!</h1>
+    <p class="success">Your free shipping banner is now active on your store.</p>
+    <p>The banner will appear at the top of all pages on your storefront.</p>
+    <h3>Banner Preview:</h3>
+    <div class="banner-preview">
+      🎉 Free Shipping on All Orders! 🎉
+    </div>
+  </div>
+  
+  <script>
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const shopifyApiKey = urlParams.get('apiKey');
+    const host = urlParams.get('host');
+    
+    if (shopifyApiKey && host) {
+      const AppBridge = window['app-bridge'];
+      const createApp = AppBridge.default;
+      const { Toast } = AppBridge.actions;
+      
+      const app = createApp({
+        apiKey: shopifyApiKey,
+        host: host
+      });
+      
+      const toastNotice = Toast.create(app, {
+        message: 'Banner app installed successfully!',
+        duration: 3000
+      });
+      toastNotice.dispatch(Toast.Action.SHOW);
+    }
+  </script>
+</body>
+</html>
